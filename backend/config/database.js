@@ -1,16 +1,19 @@
-const mongoose = require("mongoose");
+const { Sequelize } = require("sequelize");
 
-mongoose.connect("mongodb://localhost:27017/chat-app", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+// MySQL Connection Configuration
+const sequelize = new Sequelize("chat_app", "root", "11223344", {
+  host: "localhost",
+  dialect: "mysql",
 });
 
-mongoose.connection.on("connected", () => {
-  console.log("Connected to MongoDB");
-});
+// Test the MySQL Connection
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("MySQL connection established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to MySQL:", error);
+  }
+})();
 
-mongoose.connection.on("error", (err) => {
-  console.error("MongoDB connection error:", err);
-});
-
-module.exports = mongoose;
+module.exports = sequelize;
